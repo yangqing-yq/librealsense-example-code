@@ -22,30 +22,9 @@ int main(int argc, char * argv[]) try
     // Declare depth colorizer for pretty visualization of depth data
     rs2::colorizer color_map;
 
+	//Declare RealSense pipeline
+	rs2::pipeline pipe;
 
-	//------------load preset json start---------------
-	rs2::context ctx;
-	rs2::pipeline pipe(ctx);
-	auto devices = ctx.query_devices();
-	size_t device_count = devices.size();
-	if (!device_count)
-	{
-		std::cout << "No device detected. Is it plugged in?\n";
-		return EXIT_SUCCESS;
-	}
-	auto dev = devices[0];
-	//read json file
-	std::ifstream file("C:\\2AndersShortNew.json");
-	std::string json_content((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-	//enable advance mode & load json
-	if (dev.is<rs400::advanced_mode>())
-	{
-		auto advanced_mode_dev = dev.as<rs400::advanced_mode>();
-		if (!advanced_mode_dev.is_enabled())
-			advanced_mode_dev.toggle_advanced_mode(true);
-		advanced_mode_dev.load_json(json_content);
-	}
-	//------------load preset json end---------------
 
     // Start streaming with default recommended configuration
     pipe.start();
@@ -60,6 +39,15 @@ int main(int argc, char * argv[]) try
         // For cameras that don't have RGB sensor, we'll render infrared frames instead of color
         if (!color)
             color = data.get_infrared_frame();
+
+		//------------keep frames start---------------
+		auto raw_data = data.get_depth_frame();
+		raw_data.keep();
+		list.push_back(raw_data);
+		std::_Count_pr << list.size << std::endl;
+		//------------keep frames end---------------
+
+
 
         // Render depth on to the first half of the screen and color on to the second
         depth_image.render(depth, { 0,               0, app.width() / 2, app.height() });
