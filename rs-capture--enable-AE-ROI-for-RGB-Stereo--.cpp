@@ -30,7 +30,7 @@ int main(int argc, char * argv[]) try
 
 	//------------------------Start of set AE roi for RGB and Stereo----------------------
 	//set roi value for x,y axis in pixel map. Below is just an example for 10% center ROI.
-	int xs = 640 * 0.45 , xe = 640 * 0.55, ys = 480 * 0.45, ye = 480 * 0.55;
+	int xs = 0 , xe = 640 * 0.55, ys = 0, ye = 480 * 0.55;
 	rs2::region_of_interest roi{};
 	roi.min_x = static_cast<int>(xs);
 	roi.max_x = static_cast<int>(xe);

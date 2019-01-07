@@ -25,6 +25,10 @@ int main(int argc, char * argv[]) try
 	//Declare RealSense pipeline
 	rs2::pipeline pipe;
 
+	//------------keep frames start---------------
+	std::vector<rs2::frameset> list;
+
+	//------------keep frames end---------------
 
     // Start streaming with default recommended configuration
     pipe.start();
